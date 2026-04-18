@@ -1,77 +1,98 @@
 import streamlit as st
+import pandas as pd
 
 st.set_page_config(page_title="Sumalatha Loan Assistance", layout="wide")
 
-# HEADER
-st.markdown("<h1 style='text-align:center;'>🏦 Sumalatha Loan Assistance</h1>", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align:center;'>Empowering Your Financial Journey</h4>", unsafe_allow_html=True)
+# 🔥 CUSTOM CSS (BACKGROUND + ANIMATION)
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(to right, #141e30, #243b55);
+    color: white;
+}
 
-st.markdown("---")
+.card {
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.1);
+    text-align: center;
+    transition: 0.3s;
+}
 
-# SERVICES
-st.subheader("💼 Loan Services")
+.card:hover {
+    transform: scale(1.05);
+}
 
-col1, col2, col3, col4 = st.columns(4)
+</style>
+""", unsafe_allow_html=True)
 
-with col1:
-    st.info("🏠 Home Loan\n\nLow interest & long tenure")
+# 🧭 SIDEBAR
+st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3135/3135706.png", width=100)
+st.sidebar.title("Navigation")
 
-with col2:
-    st.info("💼 Personal Loan\n\nQuick approval, no collateral")
+menu = st.sidebar.radio("Go to", ["Home", "EMI Calculator", "Eligibility Checker", "Apply", "Contact"])
 
-with col3:
-    st.info("🎓 Education Loan\n\nFor higher tudies")
-s
-with col4:
-    st.info("🟡 Gold Loan\n\nInstant loan against gold")
+# 🏠 HOME
+if menu == "Home":
+    st.markdown("<h1 style='text-align:center;'>🏦 Sumalatha Loan Assistance</h1>", unsafe_allow_html=True)
+    st.markdown("<h4 style='text-align:center;'>Trusted Banking Guidance</h4>", unsafe_allow_html=True)
 
-st.markdown("---")
+    st.markdown("---")
 
-# EMI CALCULATOR
-st.subheader("📊 EMI Calculator")
+    col1, col2, col3, col4 = st.columns(4)
 
-col1, col2, col3 = st.columns(3)
+    col1.markdown("<div class='card'>🏠 Home Loan</div>", unsafe_allow_html=True)
+    col2.markdown("<div class='card'>💼 Personal Loan</div>", unsafe_allow_html=True)
+    col3.markdown("<div class='card'>🎓 Education Loan</div>", unsafe_allow_html=True)
+    col4.markdown("<div class='card'>🟡 Gold Loan</div>", unsafe_allow_html=True)
 
-with col1:
+# 📊 EMI CALCULATOR
+elif menu == "EMI Calculator":
+    st.title("📊 EMI Calculator")
+
     amount = st.number_input("Loan Amount (₹)", value=100000)
-
-with col2:
     rate = st.number_input("Interest Rate (%)", value=10.0)
-
-with col3:
     tenure = st.number_input("Tenure (months)", value=12)
 
-if st.button("Calculate EMI"):
-    emi = (amount * rate/1200 * (1 + rate/1200)**tenure) / ((1 + rate/1200)**tenure - 1)
-    st.success(f"Monthly EMI: ₹ {round(emi,2)}")
+    if st.button("Calculate EMI"):
+        emi = (amount * rate/1200 * (1 + rate/1200)**tenure) / ((1 + rate/1200)**tenure - 1)
+        st.success(f"Monthly EMI: ₹ {round(emi,2)}")
 
-st.markdown("---")
+# 🧠 ELIGIBILITY CHECKER
+elif menu == "Eligibility Checker":
+    st.title("🧠 Loan Eligibility Checker")
 
-# APPLICATION FORM
-st.subheader("📝 Apply for Loan")
+    salary = st.number_input("Monthly Salary (₹)", value=25000)
+    age = st.number_input("Age", value=25)
+    employment = st.selectbox("Employment Type", ["Salaried", "Self-employed"])
 
-name = st.text_input("Full Name")
-phone = st.text_input("Phone Number")
-email = st.text_input("Email")
+    if st.button("Check Eligibility"):
+        eligible_amount = salary * 20
+        st.success(f"You are eligible for approx ₹ {eligible_amount}")
 
-loan_type = st.selectbox("Select Loan Type",
-["Home Loan", "Personal Loan", "Education Loan", "Gold Loan"])
+# 📝 APPLY FORM
+elif menu == "Apply":
+    st.title("📝 Apply for Loan")
 
-income = st.number_input("Monthly Income")
+    name = st.text_input("Full Name")
+    phone = st.text_input("Phone Number")
+    email = st.text_input("Email")
+    city = st.text_input("City")
 
-if st.button("Submit Application"):
-    st.success("✅ Application submitted successfully!")
-    st.write("We will contact you soon.")
+    loan_type = st.selectbox("Loan Type",
+    ["Home Loan", "Personal Loan", "Education Loan", "Gold Loan"])
 
-st.markdown("---")
+    income = st.number_input("Monthly Income")
 
-# CONTACT
-st.subheader("📞 Contact")
+    if st.button("Submit"):
+        st.success("✅ Application submitted successfully!")
 
-st.write("📱 Phone: +91 XXXXXXXX")
-st.write("📧 Email: your@email.com")
-st.write("🏢 Location: Your City")
+# 📞 CONTACT
+elif menu == "Contact":
+    st.title("📞 Contact")
 
-st.markdown("---")
+    st.write("👩‍💼 Loan Advisor: Sumalatha")
+    st.write("📱 Phone: 8125157342")
+    st.write("📧 Email: slatha3245@gmail.com")
 
-st.caption("© 2026 Sumalatha Loan Assistance | Designed by Shankar")
+    st.markdown("[💬 Chat on WhatsApp](https://wa.me/+918125157342)")
