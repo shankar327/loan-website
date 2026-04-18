@@ -20,8 +20,8 @@ with col2:
     st.info("💼 Personal Loan\n\nQuick approval, no collateral")
 
 with col3:
-    st.info("🎓 Education Loan\n\nFor higher studies")
-
+    st.info("🎓 Education Loan\n\nFor higher tudies")
+s
 with col4:
     st.info("🟡 Gold Loan\n\nInstant loan against gold")
 
