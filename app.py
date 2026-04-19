@@ -2,14 +2,14 @@ import streamlit as st
 
 st.set_page_config(page_title="Sumalatha Loan Assistance", layout="wide")
 
-# 🔁 SESSION STATE (FOR NAVIGATION)
+# 🔁 SESSION STATE
 if "menu" not in st.session_state:
     st.session_state.menu = "Home"
 
 if "selected_loan" not in st.session_state:
     st.session_state.selected_loan = "Home Loan"
 
-# 🎨 BACKGROUND + STYLE
+# 🎨 STYLE
 st.markdown("""
 <style>
 .stApp {
@@ -36,16 +36,13 @@ st.markdown("""
 <hr>
 """, unsafe_allow_html=True)
 
-# 📌 SIDEBAR MENU
-menu = st.sidebar.radio(
-    "Menu",
-    ["Home", "Loan Details", "EMI Calculator", "Eligibility Checker", "Apply", "Track Status", "Contact"],
-    index=["Home", "Loan Details", "EMI Calculator", "Eligibility Checker", "Apply", "Track Status", "Contact"].index(st.session_state.menu)
-)
+# 📌 SIDEBAR MENU (AUTO CONTROLLED)
+menu_options = ["Home", "Loan Details", "EMI Calculator", "Eligibility Checker", "Apply", "Track Status", "Contact"]
 
+menu = st.sidebar.radio("Menu", menu_options, index=menu_options.index(st.session_state.menu))
 st.session_state.menu = menu
 
-# 🏠 HOME PAGE (CLICK → REDIRECT)
+# 🏠 HOME (CLICK → CHANGE SIDEBAR)
 if menu == "Home":
     st.subheader("Choose Loan Type")
 
@@ -71,7 +68,7 @@ if menu == "Home":
         st.session_state.menu = "Loan Details"
         st.rerun()
 
-# 📄 LOAN DETAILS PAGE
+# 📄 LOAN DETAILS (AUTO SELECTED)
 elif menu == "Loan Details":
     loan = st.selectbox(
         "Select Loan",
@@ -80,18 +77,18 @@ elif menu == "Loan Details":
     )
 
     if loan == "Home Loan":
-        st.info("🏠 Interest: 8.5% | Tenure: up to 20 years | Best for buying house")
+        st.info("🏠 Interest: 8.5% | Tenure: up to 20 years")
 
     elif loan == "Personal Loan":
-        st.info("💼 Interest: 11% | Quick approval | No collateral")
+        st.info("💼 Interest: 11% | Quick approval")
 
     elif loan == "Education Loan":
-        st.info("🎓 Low interest | Flexible repayment")
+        st.info("🎓 Low interest for students")
 
     elif loan == "Gold Loan":
-        st.info("🟡 Instant loan | Minimum documents")
+        st.info("🟡 Instant loan")
 
-# 📊 EMI CALCULATOR
+# 📊 EMI
 elif menu == "EMI Calculator":
     st.subheader("EMI Calculator")
 
@@ -99,55 +96,50 @@ elif menu == "EMI Calculator":
     R = st.number_input("Interest Rate (%)", value=10.0)
     T = st.number_input("Tenure (months)", value=12)
 
-    if st.button("Calculate EMI"):
+    if st.button("Calculate"):
         r = R/1200
         emi = (P*r*(1+r)**T)/((1+r)**T-1)
-        st.success(f"Monthly EMI: ₹ {round(emi,2)}")
+        st.success(f"EMI: ₹ {round(emi,2)}")
 
-# 🧠 ELIGIBILITY CHECKER
+# 🧠 ELIGIBILITY
 elif menu == "Eligibility Checker":
-    st.subheader("Check Loan Eligibility")
+    st.subheader("Eligibility Checker")
 
-    salary = st.number_input("Monthly Salary (₹)", value=25000)
+    salary = st.number_input("Monthly Salary", value=25000)
     age = st.number_input("Age", value=25)
 
-    if st.button("Check Eligibility"):
+    if st.button("Check"):
         if age < 21:
-            st.error("❌ Not eligible (Minimum age 21)")
+            st.error("Not eligible")
         else:
-            eligible = salary * 8
-            st.success(f"✅ Eligible amount: ₹ {eligible}")
+            st.success(f"Eligible Loan: ₹ {salary * 8}")
 
-# 📝 APPLY (GOOGLE FORM EMBED)
+# 📝 APPLY (FORM)
 elif menu == "Apply":
     st.subheader("Apply for Loan")
 
-    st.info("Fill the form below. Your details will be recorded.")
-
     st.markdown("""
     <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeVufRgJn3Kvf871ceybPR9yIMi8YDhpfCg2lSCQO68n_er3A/viewform?embedded=true" 
-    width="100%" height="800" frameborder="0">
+    width="100%" height="800">
     </iframe>
     """, unsafe_allow_html=True)
 
-# 📍 TRACK STATUS
+# 📍 TRACK
 elif menu == "Track Status":
-    st.subheader("Track Loan Status")
+    st.subheader("Track Status")
 
     phone = st.text_input("Enter Phone Number")
 
-    if st.button("Check Status"):
-        st.info("📌 Status: Under Review (Demo)")
+    if st.button("Check"):
+        st.info("Status: Under Review")
 
 # 📞 CONTACT
 elif menu == "Contact":
-    st.subheader("Contact Details")
+    st.subheader("Contact")
 
-    st.write("👩‍💼 Loan Advisor: Sumalatha")
-    st.write("📱 Phone: 8125157342")
-    st.write("📧 Email: sumalatha.loans@gmail.com")
-
-    st.markdown("[💬 Chat on WhatsApp](https://wa.me/918125157342)")
+    st.write("👩‍💼 Sumalatha")
+    st.write("📱 8125157342")
+    st.markdown("[WhatsApp](https://wa.me/918125157342)")
 
 # FOOTER
 st.markdown("---")
