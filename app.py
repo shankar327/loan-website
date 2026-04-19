@@ -2,7 +2,14 @@ import streamlit as st
 
 st.set_page_config(page_title="Sumalatha Loan Assistance", layout="wide")
 
-# 🔥 BACKGROUND STYLE
+# 🔁 SESSION STATE (FOR NAVIGATION)
+if "menu" not in st.session_state:
+    st.session_state.menu = "Home"
+
+if "selected_loan" not in st.session_state:
+    st.session_state.selected_loan = "Home Loan"
+
+# 🎨 BACKGROUND + STYLE
 st.markdown("""
 <style>
 .stApp {
@@ -29,45 +36,60 @@ st.markdown("""
 <hr>
 """, unsafe_allow_html=True)
 
-# 📌 SIDEBAR
-st.sidebar.markdown("## 🏦 Sumalatha Loan Assistance")
-menu = st.sidebar.radio("Menu", [
-    "Home", 
-    "Loan Details", 
-    "EMI Calculator", 
-    "Eligibility Checker", 
-    "Apply", 
-    "Track Status", 
-    "Contact"
-])
+# 📌 SIDEBAR MENU
+menu = st.sidebar.radio(
+    "Menu",
+    ["Home", "Loan Details", "EMI Calculator", "Eligibility Checker", "Apply", "Track Status", "Contact"],
+    index=["Home", "Loan Details", "EMI Calculator", "Eligibility Checker", "Apply", "Track Status", "Contact"].index(st.session_state.menu)
+)
 
-# 🏠 HOME
+st.session_state.menu = menu
+
+# 🏠 HOME PAGE (CLICK → REDIRECT)
 if menu == "Home":
     st.subheader("Choose Loan Type")
 
     col1, col2, col3, col4 = st.columns(4)
 
-    col1.markdown("<div class='card'>🏠 Home Loan</div>", unsafe_allow_html=True)
-    col2.markdown("<div class='card'>💼 Personal Loan</div>", unsafe_allow_html=True)
-    col3.markdown("<div class='card'>🎓 Education Loan</div>", unsafe_allow_html=True)
-    col4.markdown("<div class='card'>🟡 Gold Loan</div>", unsafe_allow_html=True)
+    if col1.button("🏠 Home Loan"):
+        st.session_state.selected_loan = "Home Loan"
+        st.session_state.menu = "Loan Details"
+        st.rerun()
 
-# 📄 LOAN DETAILS
+    if col2.button("💼 Personal Loan"):
+        st.session_state.selected_loan = "Personal Loan"
+        st.session_state.menu = "Loan Details"
+        st.rerun()
+
+    if col3.button("🎓 Education Loan"):
+        st.session_state.selected_loan = "Education Loan"
+        st.session_state.menu = "Loan Details"
+        st.rerun()
+
+    if col4.button("🟡 Gold Loan"):
+        st.session_state.selected_loan = "Gold Loan"
+        st.session_state.menu = "Loan Details"
+        st.rerun()
+
+# 📄 LOAN DETAILS PAGE
 elif menu == "Loan Details":
-    loan = st.selectbox("Select Loan", 
-        ["Home Loan", "Personal Loan", "Education Loan", "Gold Loan"])
+    loan = st.selectbox(
+        "Select Loan",
+        ["Home Loan", "Personal Loan", "Education Loan", "Gold Loan"],
+        index=["Home Loan", "Personal Loan", "Education Loan", "Gold Loan"].index(st.session_state.selected_loan)
+    )
 
     if loan == "Home Loan":
-        st.info("Interest: 8.5% | Tenure: up to 20 years")
+        st.info("🏠 Interest: 8.5% | Tenure: up to 20 years | Best for buying house")
 
     elif loan == "Personal Loan":
-        st.info("Interest: 11% | Quick approval")
+        st.info("💼 Interest: 11% | Quick approval | No collateral")
 
     elif loan == "Education Loan":
-        st.info("Low interest for students")
+        st.info("🎓 Low interest | Flexible repayment")
 
     elif loan == "Gold Loan":
-        st.info("Instant loan against gold")
+        st.info("🟡 Instant loan | Minimum documents")
 
 # 📊 EMI CALCULATOR
 elif menu == "EMI Calculator":
@@ -96,16 +118,15 @@ elif menu == "Eligibility Checker":
             eligible = salary * 8
             st.success(f"✅ Eligible amount: ₹ {eligible}")
 
-# 📝 APPLY (FORM CONNECTED HERE)
+# 📝 APPLY (GOOGLE FORM EMBED)
 elif menu == "Apply":
     st.subheader("Apply for Loan")
 
-    st.info("Fill the form below. Your details will be securely recorded.")
+    st.info("Fill the form below. Your details will be recorded.")
 
     st.markdown("""
     <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeVufRgJn3Kvf871ceybPR9yIMi8YDhpfCg2lSCQO68n_er3A/viewform?embedded=true" 
-    width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">
-    Loading…
+    width="100%" height="800" frameborder="0">
     </iframe>
     """, unsafe_allow_html=True)
 
