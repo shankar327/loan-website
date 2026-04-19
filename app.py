@@ -47,18 +47,10 @@ if menu == "Home":
 
     col1, col2, col3, col4 = st.columns(4)
 
-    if col1.button("🏠 Home Loan"):
-        st.session_state.loan = "Home Loan"
-        st.switch_page("")
-
-    if col2.button("💼 Personal Loan"):
-        st.session_state.loan = "Personal Loan"
-
-    if col3.button("🎓 Education Loan"):
-        st.session_state.loan = "Education Loan"
-
-    if col4.button("🟡 Gold Loan"):
-        st.session_state.loan = "Gold Loan"
+    col1.markdown("<div class='card'>🏠 Home Loan</div>", unsafe_allow_html=True)
+    col2.markdown("<div class='card'>💼 Personal Loan</div>", unsafe_allow_html=True)
+    col3.markdown("<div class='card'>🎓 Education Loan</div>", unsafe_allow_html=True)
+    col4.markdown("<div class='card'>🟡 Gold Loan</div>", unsafe_allow_html=True)
 
 # 📄 LOAN DETAILS
 elif menu == "Loan Details":
@@ -66,16 +58,16 @@ elif menu == "Loan Details":
         ["Home Loan", "Personal Loan", "Education Loan", "Gold Loan"])
 
     if loan == "Home Loan":
-        st.info("Interest: 8.5% | Tenure: up to 20 years | Best for buying house")
+        st.info("Interest: 8.5% | Tenure: up to 20 years")
 
     elif loan == "Personal Loan":
-        st.info("Interest: 11% | Quick approval | No collateral")
+        st.info("Interest: 11% | Quick approval")
 
     elif loan == "Education Loan":
-        st.info("Low interest | Flexible repayment")
+        st.info("Low interest for students")
 
     elif loan == "Gold Loan":
-        st.info("Instant loan | Minimum documents")
+        st.info("Instant loan against gold")
 
 # 📊 EMI CALCULATOR
 elif menu == "EMI Calculator":
@@ -90,7 +82,7 @@ elif menu == "EMI Calculator":
         emi = (P*r*(1+r)**T)/((1+r)**T-1)
         st.success(f"Monthly EMI: ₹ {round(emi,2)}")
 
-# 🧠 ELIGIBILITY CHECKER (FIXED)
+# 🧠 ELIGIBILITY CHECKER
 elif menu == "Eligibility Checker":
     st.subheader("Check Loan Eligibility")
 
@@ -99,31 +91,23 @@ elif menu == "Eligibility Checker":
 
     if st.button("Check Eligibility"):
         if age < 21:
-            st.error("❌ Not eligible (Minimum age is 21)")
+            st.error("❌ Not eligible (Minimum age 21)")
         else:
-            eligible = salary * 8   # realistic value
-            st.success(f"✅ You are eligible for approx ₹ {eligible}")
+            eligible = salary * 8
+            st.success(f"✅ Eligible amount: ₹ {eligible}")
 
-# 📝 APPLY
+# 📝 APPLY (FORM CONNECTED HERE)
 elif menu == "Apply":
     st.subheader("Apply for Loan")
 
-    name = st.text_input("Full Name")
-    phone = st.text_input("Phone Number")
-    email = st.text_input("Email")
-    city = st.text_input("City")
+    st.info("Fill the form below. Your details will be securely recorded.")
 
-    loan_type = st.selectbox("Loan Type",
-        ["Home Loan", "Personal Loan", "Education Loan", "Gold Loan"])
-
-    income = st.number_input("Monthly Income")
-
-    if st.button("Submit Application"):
-        st.success("✅ Application submitted successfully!")
-
-        # WhatsApp auto message
-        message = f"New Loan Application:%0AName: {name}%0APhone: {phone}%0ALoan: {loan_type}"
-        st.markdown(f"[📲 Send to WhatsApp](https://wa.me/918125157342?text={message})")
+    st.markdown("""
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeVufRgJn3Kvf871ceybPR9yIMi8YDhpfCg2lSCQO68n_er3A/viewform?embedded=true" 
+    width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">
+    Loading…
+    </iframe>
+    """, unsafe_allow_html=True)
 
 # 📍 TRACK STATUS
 elif menu == "Track Status":
@@ -139,10 +123,10 @@ elif menu == "Contact":
     st.subheader("Contact Details")
 
     st.write("👩‍💼 Loan Advisor: Sumalatha")
-    st.write("📱 Phone: 7032430897")
-    st.write("📧 Email: slatha3245@gmail.com")
+    st.write("📱 Phone: 8125157342")
+    st.write("📧 Email: sumalatha.loans@gmail.com")
 
-    st.markdown("[💬 Chat on WhatsApp](https://wa.me/7032430897)")
+    st.markdown("[💬 Chat on WhatsApp](https://wa.me/918125157342)")
 
 # FOOTER
 st.markdown("---")
